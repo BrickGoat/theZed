@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">TheZed</string>
+    <string-array name="activityTypesArray">
+        <item>SLEEP</item>
+        <item>MEAL</item>
+        <item>TESTSTUDY</item>
+        <item>HOMEWORK</item>
+        <item>SKILLTRAINING</item>
+        <item>PROJECTBUILDING</item>
+        <item>ENTERTAINMENT</item>
+        <item>GENERALSTUDY</item>
+        <item>ANOMALY</item>
+    </string-array>
+
+</resources>

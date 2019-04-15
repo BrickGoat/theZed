@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.brick.thezed.MainActivity"
+    android:background="@color/earth">
+    <android.support.design.widget.AppBarLayout
+        android:layout_height="200dp"
+        android:gravity="center"
+        app:elevation="0dp"
+        android:id="@+id/appBarId"
+        android:layout_width="match_parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/alien"/>
+        </android.support.design.widget.AppBarLayout>
+    <android.support.design.widget.TabLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        android:id="@+id/tabLayout_id"
+        app:tabTextColor="@color/sky"
+        app:tabIndicatorColor="#DA1515"
+        android:background="@color/grass">
+    </android.support.design.widget.TabLayout>
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewPager">
+    </android.support.v4.view.ViewPager>
+</LinearLayout>
