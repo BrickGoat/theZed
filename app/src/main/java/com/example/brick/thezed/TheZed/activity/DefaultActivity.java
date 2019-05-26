@@ -19,7 +19,7 @@ public abstract class DefaultActivity {
 	private double IntrinsicValue;
 	private double enjoymentFactor;
 	private double subjectValue;
-
+	private boolean typeSwitch = false;
 	/**
 	 * @param name        - Title of Activity
 	 * @param description - brief desc of task
@@ -57,7 +57,9 @@ public abstract class DefaultActivity {
 
 	public double getEnjoymentFactor() {return enjoymentFactor;}
 
-
+	public boolean getTypeSwitch(){
+		return typeSwitch;
+	}
 	public ActivityTypes getActivityType() {
 		return subject;
 	}
@@ -74,7 +76,8 @@ public abstract class DefaultActivity {
     public void setSubjectValue(double value){
 	    subjectValue = value;
     }
-	public void setActivityType(ActivityTypes newSubject) {
+
+    public void setActivityType(ActivityTypes newSubject) {
 		switch (newSubject) {
 			case SLEEP:
 				this.subject = ActivityTypes.SLEEP;
@@ -121,4 +124,5 @@ public abstract class DefaultActivity {
 	public void setImportanceValue(double importanceValue){
 		this.importanceValue = importanceValue;
 	}
+	public void setTypeSwitch(boolean value){typeSwitch = value;}
 }

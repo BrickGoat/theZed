@@ -53,6 +53,8 @@ public class ImportanceScale
     }
 
     /**
+     * uses equation with factors from subclasses to determine importance
+     * equation: (A*T^2 + I^E)/(N + (P - E*I))
      * @param i **one activity**
      * @return importance value for one activity
      */
@@ -70,8 +72,9 @@ public class ImportanceScale
 	}
 
     /**
+     *
      * @param event **one activity**
-     * @return UrgencyFactor
+     * @return UrgencyFactor **Based on time til dueDate**
      */
 	public double getUrgencyRating(DefaultActivity event)
 	{
@@ -82,9 +85,10 @@ public class ImportanceScale
 	public double getEnjoymentFactor(DefaultActivity event){
 	    return 0;
     }
+
     /**
      * @param i **one activity**
-     * @return ActivityValue
+     * @return ActivityValue **static value for Activity Type**
      */
     public double getSubjectValue(DefaultActivity i)
     {
@@ -142,14 +146,8 @@ public class ImportanceScale
      */
 	public void setSubjectValue(double newSubjectValue, DefaultActivity i)
 	{
-		if(newSubjectValue != 0.0)
-		{
-			subjectValue = newSubjectValue;
-		}
-		else
-		{
-			subjectValue = getSubjectValue(i);
-		}
+			i.setSubjectValue(newSubjectValue);
+			i.setTypeSwitch(true);
 	}
 
     /**
@@ -160,10 +158,12 @@ public class ImportanceScale
     {
         for (DefaultActivity i: scheduleList)
         {
-            setProficiency(i);
+            getKeyWords(i);
             i.setUrgencyFactor(getUrgencyRating(i));
             i.setEnjoymentFactor(getEnjoymentFactor(i));
-            i.setSubjectValue(getSubjectValue(i));
+            if(!i.getTypeSwitch()) {
+                i.setSubjectValue(getSubjectValue(i));
+            }
         }
         for (DefaultActivity i: scheduleList)
         {
@@ -173,8 +173,9 @@ public class ImportanceScale
     }
 
     /**
-     * notes:
-     * have to incorporate time based reset of types
+     * was messing around with some logic
+     * called after getKeywords. Compares words in title to activity hashmap.
+     * multiplies words by 100 then returns ave as proficiency
      * @param i **one activity**
      * @return **proficiencyFactor 0-100**
      */
@@ -195,9 +196,9 @@ public class ImportanceScale
                             proficiency += 30;
                             count++;
                         }
+                        proficiency += proficiency / count;
                     }
                 }
-                proficiency += proficiency / count;
                 return proficiency;
             case MEAL: //day
                 for (String keyValue : i.getName().split(" ")) {
@@ -210,21 +211,25 @@ public class ImportanceScale
                         } else {
                             proficiency += 30;
                         }
+                        proficiency += proficiency / count;
                     }
                 }
+                return proficiency;
             case TESTSTUDY: //week
                 for (String keyValue : i.getName().split(" ")) {
                     if (keyValue.length() >= 4) {
                         if (testMap.get(keyValue) != null) {
                             if (testMap.get(keyValue) > 4) {
-                                proficiency += mealMap.get(keyValue) * 100;
-                                count += mealMap.get(keyValue);
+                                proficiency += testMap.get(keyValue) * 100;
+                                count += testMap.get(keyValue);
                             }
                         } else {
                             proficiency += 25;
                         }
+                        proficiency += proficiency / count;
                     }
                 }
+                return proficiency;
             default:
                 return 50;
         }
@@ -234,7 +239,7 @@ public class ImportanceScale
      * sends it to a map of all keywords in that activity
      *  @param schedule **one activity**
      */
-	public void setProficiency(DefaultActivity schedule){
+	public void getKeyWords(DefaultActivity schedule){
         ActivityTypes subType = schedule.getActivityType();
         switch(subType)
         {
@@ -268,12 +273,12 @@ public class ImportanceScale
                 for(String keyValue : schedule.getName().split(" "))
                 {
                     if (keyValue.length() >= 4) {
-                        if (mealMap.get(keyValue) != null) {
-                            mealMap.put(keyValue, mealMap.get(keyValue) + 1);
+                        if (testMap.get(keyValue) != null) {
+                            testMap.put(keyValue, testMap.get(keyValue) + 1);
                         }
                     }
                     else {
-                        mealMap.put(keyValue, 1.0);
+                        testMap.put(keyValue, 1.0);
                     }
                 }
                 break;

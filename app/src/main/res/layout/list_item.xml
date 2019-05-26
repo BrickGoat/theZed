@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:id="@+id/parentLayout">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/eventIcon"
+        android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/EntryTitle"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"
+        android:text="@string/app_name" />
+
+    <TextView
+        android:id="@+id/deadLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="194dp"
+        android:layout_toRightOf="@id/EntryTitle"
+        android:text="11-24-19"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

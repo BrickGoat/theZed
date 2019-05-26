@@ -1,54 +1,44 @@
 package com.example.brick.thezed;
 
-import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class FragmentSchedule extends Fragment
-{
-    View view;
+public class ViewSchedule extends AppCompatActivity {
+
     private ArrayList<String> eventTitles= new ArrayList<>();
     private ArrayList<String> eventDeadLines= new ArrayList<>();
     private ArrayList mImages = new ArrayList();
     DatabaseHelper myDb;
-    Button viewSchedule;
-    public FragmentSchedule()
-    {
+
+    public ViewSchedule() {
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.schedule_fragment, container, false);
-        viewSchedule = view.findViewById(R.id.ViewSchedule);
-        viewSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent schedule = new Intent(getActivity(), ViewSchedule.class);
-                startActivity(schedule);
-            }
-        });
-        return view;
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.view_schedule);
+        populateRecyclerView();
     }
 
-    private void getListEntries(){
+    private void populateRecyclerView(){
         //get all entries
         //ArrayList<String> activityTypes = new ArrayList<>();
         String activityTypes;
+        myDb = new DatabaseHelper(this);
         Cursor data = myDb.getListContents();
+        if (data.getCount() == 0){
+            Toast.makeText(ViewSchedule.this, "Empty", Toast.LENGTH_LONG).show();
+        }else {
         while (data.moveToNext()){
-          eventTitles.add(data.getString(1));
+            eventTitles.add(data.getString(1));
             eventDeadLines.add(data.getString(5));
             activityTypes = data.getString(3);
             switch (activityTypes){
@@ -79,13 +69,14 @@ public class FragmentSchedule extends Fragment
                     mImages.add(R.drawable.groupofpeople);
                 default:
                     mImages.add(R.drawable.error);}
-            }
         }
+        createRecyclerView();}
+    }
 
     public void createRecyclerView() {
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), eventTitles, eventDeadLines, mImages);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, eventTitles, eventDeadLines, mImages);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

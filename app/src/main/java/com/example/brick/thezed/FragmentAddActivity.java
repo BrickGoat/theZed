@@ -13,6 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+/**
+ * @author Brick
+ *
+ */
 public class FragmentAddActivity extends Fragment implements AdapterView.OnItemSelectedListener {
     View view;
     Context addFragment;

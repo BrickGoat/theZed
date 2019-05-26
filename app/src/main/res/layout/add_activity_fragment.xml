@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@color/earth"
     >
 
     <TextView
@@ -47,7 +46,6 @@
         android:layout_height="43dp"
         android:layout_marginEnd="304dp"
         android:layout_marginRight="304dp"
-        android:background="@color/grass"
         android:text="Pick Date"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +58,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="304dp"
         android:layout_marginRight="304dp"
-        android:background="@color/grass"
         android:text="Pick Date"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,6 +104,7 @@
         app:layout_constraintVertical_bias="0.29">
 
         <android.support.design.widget.TextInputEditText
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Entry Description/Notes" />
@@ -123,6 +121,7 @@
         app:layout_constraintVertical_bias="0.16">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/EntryTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Entry Title (Keywords)" />
@@ -142,7 +141,7 @@
         app:layout_constraintVertical_bias="0.979" />
 
     <Button
-        android:id="@+id/ConfirmButton"
+        android:id="@+id/SubmitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -151,7 +150,6 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:text="Enter"
-        android:textColor="@color/grass"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -165,11 +163,11 @@
         android:layout_marginTop="23dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="TextView"
+        android:text="Date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/initialDateLabel"
-        app:layout_constraintTop_toBottomOf="@+id/EntryDescription" />
+        tools:layout_editor_absoluteY="294dp" />
 
     <TextView
         android:id="@+id/textView5"
@@ -180,8 +178,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="265dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/ConfirmButton"
+        android:text="date"
+        app:layout_constraintBottom_toTopOf="@+id/SubmitButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.161"
         app:layout_constraintStart_toEndOf="@+id/DeadlineLabel" />
@@ -206,14 +204,13 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="132dp"
         android:text="Time"
-        android:background="@color/grass"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.029"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/timeDispay"
+        android:id="@+id/timeDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -222,7 +219,7 @@
         android:layout_marginEnd="144dp"
         android:layout_marginRight="144dp"
         android:layout_marginBottom="8dp"
-        android:text="TextView"
+        android:text="time"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="sky">#2308FC</color>
-    <color name="earth">#d47e4c</color>
-    <color name="grass">#4cd48b</color>
+    <color name="darkBlue">#00b2cc</color>
+    <color name="lightBlue">#6effff</color>
+    <color name="darkRed">#7f0000</color>
+    <color name="lightRed">#f05545</color>
     <color name="black">#000000</color>
     <color name="white">#ffff</color>
 </resources>

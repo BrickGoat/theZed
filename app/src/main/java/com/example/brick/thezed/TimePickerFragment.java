@@ -10,12 +10,12 @@ import android.text.format.DateFormat;
 
 import java.util.Calendar;
 
-public class TimePickerFragmenr extends DialogFragment {
+public class TimePickerFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int hour = c.get(Calendar.HOUR);
         int minute = c.get(Calendar.MINUTE);
         return new TimePickerDialog(getActivity(),
                 (TimePickerDialog.OnTimeSetListener) getActivity(), hour, minute, DateFormat.is24HourFormat(getActivity()));
