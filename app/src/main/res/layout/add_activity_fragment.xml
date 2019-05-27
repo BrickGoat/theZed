@@ -43,6 +43,7 @@
     <Button
         android:id="@+id/dueByButton"
         android:layout_width="wrap_content"
+        android:background="@color/lightBlue"
         android:layout_height="43dp"
         android:layout_marginEnd="304dp"
         android:layout_marginRight="304dp"
@@ -56,6 +57,7 @@
         android:id="@+id/initialDateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/lightBlue"
         android:layout_marginEnd="304dp"
         android:layout_marginRight="304dp"
         android:text="Pick Date"
@@ -83,6 +85,8 @@
         android:id="@+id/initialDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="304dp"
         android:layout_marginRight="304dp"
@@ -90,6 +94,8 @@
         android:text="Creation Date: "
         app:layout_constraintBottom_toTopOf="@+id/initialDateButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -144,6 +150,7 @@
         android:id="@+id/SubmitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/lightBlue"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
@@ -160,14 +167,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Date"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.019"
         app:layout_constraintStart_toEndOf="@+id/initialDateLabel"
-        tools:layout_editor_absoluteY="294dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.851" />
 
     <TextView
         android:id="@+id/textView5"
@@ -178,7 +188,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="265dp"
-        android:text="date"
+        android:text="Date"
         app:layout_constraintBottom_toTopOf="@+id/SubmitButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.161"
@@ -196,6 +206,7 @@
 
     <Button
         android:id="@+id/timeButton"
+        android:background="@color/lightBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

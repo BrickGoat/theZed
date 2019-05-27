@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -15,8 +16,9 @@ public class ViewSchedule extends AppCompatActivity {
 
     private ArrayList<String> eventTitles= new ArrayList<>();
     private ArrayList<String> eventDeadLines= new ArrayList<>();
-    private ArrayList mImages = new ArrayList();
+    private ArrayList<Integer> mImages = new ArrayList();
     DatabaseHelper myDb;
+    private static final String TAG = "ViewSchedule";
 
     public ViewSchedule() {
     }
@@ -25,6 +27,7 @@ public class ViewSchedule extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_schedule);
+        Log.d(TAG, "onCreate: ViewSchedule");
         populateRecyclerView();
     }
 
@@ -41,6 +44,7 @@ public class ViewSchedule extends AppCompatActivity {
             eventTitles.add(data.getString(1));
             eventDeadLines.add(data.getString(5));
             activityTypes = data.getString(3);
+
             switch (activityTypes){
                 case "SLEEP":
                     mImages.add(R.drawable.sleepinginbed);
@@ -75,7 +79,7 @@ public class ViewSchedule extends AppCompatActivity {
 
     public void createRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, eventTitles, eventDeadLines, mImages);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, eventTitles, mImages, eventDeadLines);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

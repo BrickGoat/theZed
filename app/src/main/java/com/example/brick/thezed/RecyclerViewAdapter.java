@@ -2,6 +2,7 @@ package com.example.brick.thezed;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,20 +19,20 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Adapter for schedule list **Not used**
+ *
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
     private ArrayList<String> eventTitles= new ArrayList<>();
     private ArrayList<String> eventDeadLines= new ArrayList<>();
-    private ArrayList<String> mImages = new ArrayList<>();
+    private ArrayList<Integer> mImages = new ArrayList<>();
     private Context mContext;
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         CircleImageView image;
         TextView title;
         TextView dueDate;
-        RelativeLayout parentLayout;
+        ConstraintLayout parentLayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.image = itemView.findViewById(R.id.eventIcon);
@@ -42,7 +43,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public RecyclerViewAdapter(Context mContext,
-                               ArrayList<String> eventTitles, ArrayList<String> mImages, ArrayList<String> eventDeadLines)
+                               ArrayList<String> eventTitles, ArrayList<Integer> mImages, ArrayList<String> eventDeadLines)
     {
         this.mContext = mContext;
         this.eventTitles = eventTitles;
@@ -65,7 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .asBitmap()
                 .load(mImages.get(position))
                 .into(viewHolder.image);
-        //viewHolder.dueDate.setText((CharSequence)eventDeadLines.get(position));
+        viewHolder.dueDate.setText(eventDeadLines.get(position));
         viewHolder.title.setText(eventTitles.get(position));
 
     }

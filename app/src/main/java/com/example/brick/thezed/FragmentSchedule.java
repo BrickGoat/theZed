@@ -84,7 +84,7 @@ public class FragmentSchedule extends Fragment
 
     public void createRecyclerView() {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), eventTitles, eventDeadLines, mImages);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), eventTitles, mImages, eventDeadLines);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
