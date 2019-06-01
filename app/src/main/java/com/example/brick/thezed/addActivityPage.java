@@ -2,6 +2,7 @@ package com.example.brick.thezed;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -19,7 +20,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author Brick
@@ -30,7 +34,6 @@ public class addActivityPage extends AppCompatActivity implements AdapterView.On
     DatabaseHelper myUnsortedDb;
     private TextInputLayout textInputEntryName;
     private TextInputLayout textInputEntryDescription;
-    private String dateCurr;
     private TextView initial;
     private TextView dueBy;
     private TextView subTime;
@@ -38,6 +41,8 @@ public class addActivityPage extends AppCompatActivity implements AdapterView.On
     private String nameInput;
     private String descriptionInput;
     private static final String TAG = "addActivityPage";
+    private String initialDate;
+
     public addActivityPage() {
     }
 
@@ -57,8 +62,8 @@ public class addActivityPage extends AppCompatActivity implements AdapterView.On
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
         //initial calendar date
-        final Button initialDate = findViewById(R.id.initialDateButton);
-        initialDate.setOnClickListener(new View.OnClickListener() {
+        final Button initialDateButton = findViewById(R.id.initialDateButton);
+        initialDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment datePicker = new DatePickerFragment();
@@ -91,13 +96,15 @@ public class addActivityPage extends AppCompatActivity implements AdapterView.On
         textInputEntryDescription = findViewById(R.id.EntryDescription);
         //Attempt to submit entry to database
         Button submit = findViewById(R.id.SubmitButton);
-        submit.setOnClickListener(new View.OnClickListener(){
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (validateName()){
-                nameInput = textInputEntryName.getEditText().getText().toString().trim();}
-                if (validateDescription()){
-                descriptionInput = textInputEntryDescription.getEditText().getText().toString().trim();}
+                if (validateName()) {
+                    nameInput = textInputEntryName.getEditText().getText().toString().trim();
+                }
+                if (validateDescription()) {
+                    descriptionInput = textInputEntryDescription.getEditText().getText().toString().trim();
+                }
                 String subject = spinner.getSelectedItem().toString();
                 if (subject.isEmpty())
                     Log.d(TAG, "spinner");
@@ -111,37 +118,46 @@ public class addActivityPage extends AppCompatActivity implements AdapterView.On
                 if (time.isEmpty())
                     Log.d(TAG, "time");
                 addData(nameInput, descriptionInput, subject, initialDate, dueDate, time);
-
             }
         });
     }
+
     public void addData(String name, String description, String subject,
                         String initialDate, String dueDate, String time) {
+        if (name != null){
         boolean isInserted = myUnsortedDb.addData(name, description, subject, initialDate, dueDate, time);
-    if (isInserted){
-        Toast.makeText(this, "Data Inserted", Toast.LENGTH_LONG).show();
-    } else {
-        Toast.makeText(this, "Data Not Inserted", Toast.LENGTH_LONG).show();
+        if (isInserted) {
+            Toast.makeText(this, "Data Inserted", Toast.LENGTH_LONG).show();
+            Intent main = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(main);
+        } else {
+            Toast.makeText(this, "Data Not Inserted", Toast.LENGTH_LONG).show();
+        }}
+        else {
+            Toast.makeText(this, "Data Not Inserted", Toast.LENGTH_LONG).show();
+        }
     }
-    }
+
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int day){
+    public void onDateSet(DatePicker view, int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
-        dateCurr = DateFormat.getDateInstance().format(calendar.getTime());
-        if (dateSwitch){
+        String dateCurr = DateFormat.getDateInstance().format(calendar.getTime());
+
+        if (dateSwitch) {
             initial.setText(dateCurr);
-        }
-        else {
+        } else {
             dueBy.setText(dateCurr);
         }
     }
+
     @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute){
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         subTime.setText(hourOfDay + ":" + minute);
     }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
         String text = adapterView.getItemAtPosition(position).toString();

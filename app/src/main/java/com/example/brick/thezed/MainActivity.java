@@ -22,12 +22,14 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout_id);
         appBarLayout = findViewById(R.id.appBarId);
         createMainViewPager();
+        viewPager.setCurrentItem(1);
         tabLayout.setupWithViewPager(viewPager);
- //       createActivitiesPager();
+        //       createActivitiesPager();
 
     }
+
     //horizontal swipe fragments
-    private void createMainViewPager(){
+    private void createMainViewPager() {
         viewPager = findViewById(R.id.viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.AddFragment(new FragmentActivities(), "activities");
@@ -36,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
     //Activity Buttons
-   // private void createActivitiesPager(){
-  //      activityButtons = findViewById(R.id.viewPagerActivities);
-  //      ViewPagerAdapter adapterButtons = new ViewPagerAdapter(getSupportFragmentManager());
- //       adapterButtons.AddFragment(new FragmentAddActivity(), "add");
- //       adapterButtons.AddFragment(new FragmentModifyActivity(), "change");
- //       activityButtons.setAdapter(adapterButtons);
- //   }
+    // private void createActivitiesPager(){
+    //      activityButtons = findViewById(R.id.viewPagerActivities);
+    //      ViewPagerAdapter adapterButtons = new ViewPagerAdapter(getSupportFragmentManager());
+    //       adapterButtons.AddFragment(new FragmentAddActivity(), "add");
+    //       adapterButtons.AddFragment(new FragmentModifyActivity(), "change");
+    //       activityButtons.setAdapter(adapterButtons);
+    //   }
 
 
 }

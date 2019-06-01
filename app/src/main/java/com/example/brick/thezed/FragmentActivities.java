@@ -13,14 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-public class FragmentActivities extends Fragment
-{
+public class FragmentActivities extends Fragment {
     View view;
     private Button btnAddActivity;
     private Button btnModifyActivty;
 
-    public FragmentActivities()
-    {}
+    public FragmentActivities() {
+    }
 
     @Nullable
     @Override
@@ -28,7 +27,7 @@ public class FragmentActivities extends Fragment
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activities_fragment, container, false);
         btnAddActivity = (Button) view.findViewById(R.id.addActivity);
-        btnModifyActivty = (Button) view.findViewById(R.id.modifyActivity);
+        // btnModifyActivty = (Button) view.findViewById(R.id.modifyActivity);
         btnAddActivity.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent add = new Intent(getContext(), addActivityPage.class);

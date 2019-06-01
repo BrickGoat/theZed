@@ -22,5 +22,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ViewSchedule" />
+        <activity android:name=".DetailedScheduleView" />
     </application>
 </manifest>

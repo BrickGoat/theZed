@@ -1,7 +1,6 @@
 package com.example.brick.thezed;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,15 +9,18 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 
 public class ViewSchedule extends AppCompatActivity {
 
-    private ArrayList<String> eventTitles= new ArrayList<>();
-    private ArrayList<String> eventDeadLines= new ArrayList<>();
-    private ArrayList<Integer> mImages = new ArrayList();
-    DatabaseHelper myDb;
     private static final String TAG = "ViewSchedule";
+    private ArrayList<scheduleEntry> fullSchedule = new ArrayList<>();
+    DatabaseHelper myDb;
 
     public ViewSchedule() {
     }
@@ -29,57 +31,98 @@ public class ViewSchedule extends AppCompatActivity {
         setContentView(R.layout.view_schedule);
         Log.d(TAG, "onCreate: ViewSchedule");
         populateRecyclerView();
+        getIncomingIntent();
+        createRecyclerView();
     }
 
-    private void populateRecyclerView(){
+    public void getIncomingIntent() {
+        Log.d(TAG, "getIncomingIntent: ");
+        if (getIntent().hasExtra("order")) {
+            String order = getIntent().getStringExtra("order");
+            setScheduleList(order);
+        }
+    }
+
+    public void setScheduleList(String order) {
+        switch (order) {
+            case "date":
+                //for (int i = 0; i < fullSchedule.size(); i++){
+                //     scheduleEntry entry = fullSchedule.get(i);
+                Collections.sort(fullSchedule);
+
+
+                break;
+            case "alpha":
+                Comparator<scheduleEntry> alpha = new Comparator<scheduleEntry>() {
+                    public int compare(scheduleEntry s1, scheduleEntry s2) {
+                        return s1.getTitle().compareTo(s2.getTitle());
+                    }
+                };
+                Collections.sort(fullSchedule, alpha);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void populateRecyclerView() {
         //get all entries
         //ArrayList<String> activityTypes = new ArrayList<>();
         String activityTypes;
         myDb = new DatabaseHelper(this);
         Cursor data = myDb.getListContents();
-        if (data.getCount() == 0){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+        if (data.getCount() == 0) {
             Toast.makeText(ViewSchedule.this, "Empty", Toast.LENGTH_LONG).show();
-        }else {
-        while (data.moveToNext()){
-            eventTitles.add(data.getString(1));
-            eventDeadLines.add(data.getString(5));
-            activityTypes = data.getString(3);
-
-            switch (activityTypes){
-                case "SLEEP":
-                    mImages.add(R.drawable.sleepinginbed);
-                    break;
-                case "MEAL":
-                    mImages.add(R.drawable.meal);
-                    break;
-                case "TESTSTUDY":
-                    mImages.add(R.drawable.exam);
-                    break;
-                case "HOMEWORK":
-                    mImages.add(R.drawable.books);
-                    break;
-                case "SKILLTRAINING":
-                    mImages.add(R.drawable.exercise);
-                    break;
-                case "PROJECTBUILDING":
-                    mImages.add(R.drawable.hammer);
-                    break;
-                case "ENTERTAINMENT":
-                    mImages.add(R.drawable.tv);
-                    break;
-                case "GENERALSTUDY":
-                    mImages.add(R.drawable.books);
-                case "SOCIALTIME":
-                    mImages.add(R.drawable.groupofpeople);
-                default:
-                    mImages.add(R.drawable.error);}
+        } else {
+            while (data.moveToNext()) {
+                scheduleEntry dateSort = new scheduleEntry();
+                try {
+                    Date dateInitial = simpleDateFormat.parse(data.getString(4));
+                    Date dateDue = simpleDateFormat.parse(data.getString(5));
+                    dateSort = new scheduleEntry(data.getString(1), data.getString(2), data.getString(3),
+                            dateInitial, dateDue);
+                } catch (Exception e) {
+                    Log.d(TAG, "populateRecyclerView: " + e);
+                }
+                activityTypes = data.getString(3);
+                switch (activityTypes) {
+                    case "SLEEP":
+                        dateSort.setImageView(R.drawable.sleepinginbed);
+                        break;
+                    case "MEAL":
+                        dateSort.setImageView(R.drawable.meal);
+                        break;
+                    case "TESTSTUDY":
+                        dateSort.setImageView(R.drawable.exam);
+                        break;
+                    case "HOMEWORK":
+                        dateSort.setImageView(R.drawable.books);
+                        break;
+                    case "SKILLTRAINING":
+                        dateSort.setImageView(R.drawable.exercise);
+                        break;
+                    case "PROJECTBUILDING":
+                        dateSort.setImageView(R.drawable.hammer);
+                        break;
+                    case "ENTERTAINMENT":
+                        dateSort.setImageView(R.drawable.tv);
+                        break;
+                    case "GENERALSTUDY":
+                        dateSort.setImageView(R.drawable.books);
+                    case "SOCIALTIME":
+                        dateSort.setImageView(R.drawable.groupofpeople);
+                    default:
+                        dateSort.setImageView(R.drawable.error);
+                }
+                fullSchedule.add(dateSort);
+            }
         }
-        createRecyclerView();}
     }
 
     public void createRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, eventTitles, mImages, eventDeadLines);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, fullSchedule);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

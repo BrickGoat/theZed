@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 
 public class FragmentSettings extends Fragment {
     View view;
-    public FragmentSettings()
-    {
+
+    public FragmentSettings() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.settings_fragment,container, false);
+        view = inflater.inflate(R.layout.settings_fragment, container, false);
         return view;
     }
 }
