@@ -34,7 +34,8 @@ public class FragmentAddActivity extends Fragment implements AdapterView.OnItemS
         Spinner spinner = view.findViewById(R.id.spinner1);
         header = view.findViewById(R.id.addActivityPageHeader);
         header.setPaintFlags(header.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(addFragment, R.array.activityTypesArray, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(addFragment, R.array.activityTypesArray,
+                android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);

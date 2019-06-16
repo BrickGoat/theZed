@@ -14,12 +14,10 @@ import java.util.ArrayList;
 
 public class FragmentSchedule extends Fragment {
     View view;
-    private ArrayList<String> eventTitles = new ArrayList<>();
-    private ArrayList<String> eventDeadLines = new ArrayList<>();
-    private ArrayList mImages = new ArrayList();
-    DatabaseHelper myDb;
+
     Button viewScheduleByDate;
     Button viewScheduleByTitle;
+
     public FragmentSchedule() {
     }
 
@@ -42,6 +40,14 @@ public class FragmentSchedule extends Fragment {
             public void onClick(View view) {
                 Intent schedule = new Intent(getActivity(), ViewSchedule.class);
                 schedule.putExtra("order", "alpha");
+                startActivity(schedule);
+            }
+        });
+        Button viewSchedule = view.findViewById(R.id.viewScheduleOrderAdded);
+        viewSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent schedule = new Intent(getActivity(), ViewSchedule.class);
                 startActivity(schedule);
             }
         });

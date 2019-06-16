@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,8 +22,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
-    private ArrayList<scheduleEntry> fullSchedule = new ArrayList<>();
+    private ArrayList<ScheduleEntry> fullSchedule = new ArrayList<>();
     private Context mContext;
+    private boolean typeOfList;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         CircleImageView image;
@@ -42,9 +42,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public RecyclerViewAdapter(Context mContext,
-                               ArrayList<scheduleEntry> fullSchedule) {
+                               ArrayList<ScheduleEntry> fullSchedule, boolean typeOfList) {
         this.mContext = mContext;
         this.fullSchedule = fullSchedule;
+        this.typeOfList = typeOfList;
     }
 
     @NonNull
@@ -58,25 +59,32 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
         Log.d(TAG, "onBindViewHolder: called");
-        final scheduleEntry entry = fullSchedule.get(position);
+        final ScheduleEntry entry = fullSchedule.get(position);
         Glide.with(mContext)
                 .asBitmap()
                 .load(entry.getImageView())
                 .into(viewHolder.image);
-        viewHolder.dueDate.setText(entry.getStringDueDate());
         viewHolder.title.setText(entry.getTitle());
+        viewHolder.dueDate.setText(entry.getStringFullDueDate());
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (typeOfList){
                 Intent details = new Intent(mContext, DetailedScheduleView.class);
-                //details.putExtra("title", entry.getTitle());
-                //details.putExtra("deadline", entry.getDueDate());
                 details.putParcelableArrayListExtra("schedule", fullSchedule);
                 details.putExtra("entry", fullSchedule.get(position));
                 if (entry.getTitle() == null){
                     Log.d(TAG, "getIncomingIntent: ERROR NIGGA");
                 }
-                mContext.startActivity(details);
+                mContext.startActivity(details);}else {
+                    Intent modify = new Intent(mContext, ModifyActivity.class);
+                    modify.putParcelableArrayListExtra("schedule", fullSchedule);
+                    modify.putExtra("entry", fullSchedule.get(position));
+                    if (entry.getTitle() == null){
+                        Log.d(TAG, "getIncomingIntent: ERROR NIGGA");
+                    }
+                    mContext.startActivity(modify);
+                }
             }
         });
     }

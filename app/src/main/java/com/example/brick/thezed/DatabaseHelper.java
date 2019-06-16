@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String unsortedEntries = "CREATE TABLE " + TABLE_RAW
-                + " (ID INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                + " (ID INTEGER PRIMARY KEY , " +
                 "NAME TEXT, DESCRIPTION TEXT, SUBJECT TEXT, INITIALDATE TEXT, DUEDATE TEXT, TIME TEXT)";
         //String sortedEntries = "CREATE TABLE " + TABLE_SORT
         //         + " (ID INTEGER PRIMARY KEY AUTOINCREMENT , " +
@@ -48,8 +48,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(String name, String description, String subject, String initialDate
-            , String dueDate, String time) {
+    public long addData(String name, String description, String subject, String initialDate
+            , String dueDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         //contentValues.put(COL1, id);
@@ -58,15 +58,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL3, subject);
         contentValues.put(COL4, initialDate);
         contentValues.put(COL5, dueDate);
-        contentValues.put(COL6, time);
+        //contentValues.put(COL6, time);
         //contentValues.put(COL7, enjoyment);
         long result = db.insert(TABLE_RAW, null, contentValues);
         db.close();
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return result;
     }
 
     public Cursor getListContents() {
@@ -74,10 +70,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_RAW, null);
         return data;
     }
-    public void deleteinformation(String name,SQLiteDatabase sqLiteDatabase){
-        String selection = COL1+" LIKE ?";
-        String[] selection_args={name};
-        sqLiteDatabase.delete(TABLE_RAW,selection,selection_args);
+    public void deleteinformation(int id,SQLiteDatabase sqLiteDatabase){
+        if (id != 0){
+        String selection = "ROWID=?";
+        String myId = "";
+        myId = Integer.toString(id);
+        String[] selection_args={(myId)};
+        sqLiteDatabase.delete(TABLE_RAW,selection,selection_args);}else {
+            sqLiteDatabase.execSQL("delete from "+ TABLE_RAW);
 
+        }
+
+    }
+
+    public void updateTable(String col, String value, int id, SQLiteDatabase sqLiteDatabase){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(col, value);
+        sqLiteDatabase.update(TABLE_RAW, contentValues, "ROWID="+id, null);
     }
 }

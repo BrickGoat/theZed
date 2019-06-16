@@ -34,7 +34,15 @@ public class FragmentActivities extends Fragment {
                 startActivity(add);
             }
         });
-
+        btnModifyActivty = view.findViewById(R.id.modifyActivityButton);
+        btnModifyActivty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent modify = new Intent(getContext(), ViewSchedule.class);
+                modify.putExtra("modify", 0);
+                startActivity(modify);
+            }
+        });
         return view;
 
     }

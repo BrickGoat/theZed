@@ -1,7 +1,6 @@
 package com.example.brick.thezed;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -28,8 +27,8 @@ public class DetailedScheduleView extends AppCompatActivity {
     private TextView initialDateView;
     private TextView dueDateView;
     private TextView descriptionView;
-    private ArrayList<scheduleEntry> fullSchedule = new ArrayList<>();
-    private scheduleEntry entry;
+    private ArrayList<ScheduleEntry> fullSchedule = new ArrayList<>();
+    private ScheduleEntry entry;
 
     public DetailedScheduleView() {
     }
@@ -37,6 +36,7 @@ public class DetailedScheduleView extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utils.onActivityCreateSetTheme(this);
         setContentView(R.layout.detailed_shedule_view);
         Log.d(TAG, "onCreate: starting");
         titleView = findViewById(R.id.titleFull);
@@ -87,10 +87,10 @@ public class DetailedScheduleView extends AppCompatActivity {
         });
     }
 
-    private scheduleEntry getPrevious() {
+    private ScheduleEntry getPrevious() {
         int last = fullSchedule.size() - 1;
         for (int i = 0; i < fullSchedule.size(); i++) {
-            scheduleEntry tmp = fullSchedule.get(i);
+            ScheduleEntry tmp = fullSchedule.get(i);
             if (tmp.equals(entry)) {
                 if (i == 0) {
                     return fullSchedule.get(last);
@@ -101,10 +101,10 @@ public class DetailedScheduleView extends AppCompatActivity {
         return fullSchedule.get(0);
     }
 
-    private scheduleEntry getNext() {
+    private ScheduleEntry getNext() {
         int last = fullSchedule.size() - 1;
         for (int i = 0; i < fullSchedule.size(); i++) {
-            scheduleEntry tmp = fullSchedule.get(i);
+            ScheduleEntry tmp = fullSchedule.get(i);
             if (tmp.equals(entry)) {
                 if (i == last) {
                     return fullSchedule.get(0);
@@ -118,9 +118,12 @@ public class DetailedScheduleView extends AppCompatActivity {
     public void DeleteContact(View view){
         DatabaseHelper myDB =new DatabaseHelper(getApplicationContext());
         SQLiteDatabase sqLiteDatabase = myDB.getReadableDatabase();
-        myDB.deleteinformation(entry.getTitle(),sqLiteDatabase);
-        Toast.makeText(getApplication(),"  Deleted content",Toast.LENGTH_LONG).show();
-
+        if (entry.getId() != 0) {
+            myDB.deleteinformation(entry.getId(), sqLiteDatabase);
+            Toast.makeText(getApplication(), "  Deleted content" + entry.getId(), Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(getApplication(), "Bad ID: " + entry.getId(), Toast.LENGTH_LONG).show();
+        }
     }
     //sets all the fields to entry properties
     private void populatePage() {
@@ -128,7 +131,7 @@ public class DetailedScheduleView extends AppCompatActivity {
         titleView.setText(entry.getTitle());
         descriptionView.setText(entry.getDescription());
         initialDateView.setText(entry.getStringInitialDate());
-        dueDateView.setText(entry.getStringDueDate());
+        dueDateView.setText(entry.getStringFullDueDate());
         String activityType = entry.getActivityType();
         Integer image;
         activityView.setText(activityType);
@@ -172,7 +175,7 @@ public class DetailedScheduleView extends AppCompatActivity {
         Log.d(TAG, "getIncomingIntent");
         if (getIntent().hasExtra("entry")) {
             fullSchedule = getIntent().getParcelableArrayListExtra("schedule");
-            entry = (scheduleEntry) getIntent().getParcelableExtra("entry");
+            entry = (ScheduleEntry) getIntent().getParcelableExtra("entry");
             if (entry.getTitle() == null) {
                 Log.d(TAG, "getIncomingIntent: ERROR NIGGA");
             }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TheZed</string>
     <string-array name="activityTypesArray">
+        <item>Select an item…</item>
         <item>SLEEP</item>
         <item>MEAL</item>
         <item>TESTSTUDY</item>
@@ -11,5 +12,12 @@
         <item>GENERALSTUDY</item>
         <item>ANOMALY</item>
     </string-array>
-
+    <string-array name="reminderTimeIntervals">
+        <item>Select a time…</item>
+        <item>min before</item>
+        <item>hour before</item>
+        <item>day before</item>
+        <item>week before</item>
+        <item>No reminder</item>
+    </string-array>
 </resources>

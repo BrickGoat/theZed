@@ -10,6 +10,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,8 +22,9 @@ import java.util.Locale;
 public class ViewSchedule extends AppCompatActivity {
 
     private static final String TAG = "ViewSchedule";
-    private ArrayList<scheduleEntry> fullSchedule = new ArrayList<>();
+    private ArrayList<ScheduleEntry> fullSchedule = new ArrayList<>();
     DatabaseHelper myDb;
+    private boolean typeOfList = true;
 
     public ViewSchedule() {
     }
@@ -28,6 +32,7 @@ public class ViewSchedule extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utils.onActivityCreateSetTheme(this);
         setContentView(R.layout.view_schedule);
         Log.d(TAG, "onCreate: ViewSchedule");
         populateRecyclerView();
@@ -41,21 +46,24 @@ public class ViewSchedule extends AppCompatActivity {
             String order = getIntent().getStringExtra("order");
             setScheduleList(order);
         }
+        if (getIntent().hasExtra("modify")){
+            typeOfList = false;
+        }
     }
 
     public void setScheduleList(String order) {
         switch (order) {
             case "date":
                 //for (int i = 0; i < fullSchedule.size(); i++){
-                //     scheduleEntry entry = fullSchedule.get(i);
+                //     ScheduleEntry entry = fullSchedule.get(i);
                 Collections.sort(fullSchedule);
 
 
                 break;
             case "alpha":
-                Comparator<scheduleEntry> alpha = new Comparator<scheduleEntry>() {
-                    public int compare(scheduleEntry s1, scheduleEntry s2) {
-                        return s1.getTitle().compareTo(s2.getTitle());
+                Comparator<ScheduleEntry> alpha = new Comparator<ScheduleEntry>() {
+                    public int compare(ScheduleEntry s1, ScheduleEntry s2) {
+                        return s1.getTitle().toLowerCase().compareTo(s2.getTitle().toLowerCase());
                     }
                 };
                 Collections.sort(fullSchedule, alpha);
@@ -71,20 +79,20 @@ public class ViewSchedule extends AppCompatActivity {
         String activityTypes;
         myDb = new DatabaseHelper(this);
         Cursor data = myDb.getListContents();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
         if (data.getCount() == 0) {
             Toast.makeText(ViewSchedule.this, "Empty", Toast.LENGTH_LONG).show();
         } else {
+            long i = 1;
             while (data.moveToNext()) {
-                scheduleEntry dateSort = new scheduleEntry();
-                try {
-                    Date dateInitial = simpleDateFormat.parse(data.getString(4));
-                    Date dateDue = simpleDateFormat.parse(data.getString(5));
-                    dateSort = new scheduleEntry(data.getString(1), data.getString(2), data.getString(3),
-                            dateInitial, dateDue);
-                } catch (Exception e) {
-                    Log.d(TAG, "populateRecyclerView: " + e);
-                }
+                ScheduleEntry dateSort = new ScheduleEntry();
+                    LocalDate localDateInitial = LocalDate.parse(data.getString(4));
+                    LocalDateTime localDateTimeDue = LocalDateTime.parse(data.getString(5), formatter1);
+                    dateSort = new ScheduleEntry(data.getString(1), data.getString(2), data.getString(3),
+                            localDateInitial, localDateTimeDue);
+
+                    Log.d(TAG, "populateRecyclerView: " + i);
+
                 activityTypes = data.getString(3);
                 switch (activityTypes) {
                     case "SLEEP":
@@ -115,6 +123,8 @@ public class ViewSchedule extends AppCompatActivity {
                     default:
                         dateSort.setImageView(R.drawable.error);
                 }
+                dateSort.setId(i);
+                i++;
                 fullSchedule.add(dateSort);
             }
         }
@@ -122,7 +132,7 @@ public class ViewSchedule extends AppCompatActivity {
 
     public void createRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, fullSchedule);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, fullSchedule, typeOfList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

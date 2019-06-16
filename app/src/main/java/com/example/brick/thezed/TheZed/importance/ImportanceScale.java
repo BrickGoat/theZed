@@ -1,5 +1,7 @@
 package com.example.brick.thezed.TheZed.importance;
 
+
+
 import com.example.brick.thezed.TheZed.activity.ActivityTypes;
 import com.example.brick.thezed.TheZed.activity.DefaultActivity;
 
@@ -8,7 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-import static com.example.brick.thezed.TheZed.activity.ActivityTypes.*;
 
 /**
  * @author Brick
